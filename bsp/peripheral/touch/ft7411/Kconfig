@@ -1,0 +1,34 @@
+menu "Ft7411 touch panel options"
+
+config ZX_TOUCH_PANEL_FT7411
+    bool "Using touch panel ft7411"
+    default n
+    depends on ZX_TOUCH_FT7411
+
+config ZX_TOUCH_PANEL_FT7411_I2C_CHA
+    string "ft7411 using i2c channel index"
+    default "i2c3"
+    depends on ZX_TOUCH_PANEL_FT7411
+
+config ZX_TOUCH_PANEL_FT7411_RST_PIN
+    string "ft7411 reset pin"
+    default "PA.8"
+    depends on ZX_TOUCH_PANEL_FT7411
+
+config ZX_TOUCH_PANEL_FT7411_INT_PIN
+    string "ft7411 irq pin"
+    default "PA.9"
+    depends on ZX_TOUCH_PANEL_FT7411
+
+config ZX_TOUCH_PANEL_FT7411_X_RANGE
+    int "ft7411 x coordinate range"
+    default 480
+    depends on ZX_TOUCH_PANEL_FT7411
+
+config ZX_TOUCH_PANEL_FT7411_Y_RANGE
+    int "ft7411 y coordinate range"
+    default 800
+    depends on ZX_TOUCH_PANEL_FT7411
+
+endmenu
+

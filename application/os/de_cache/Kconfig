@@ -1,0 +1,6 @@
+menuconfig ZX_DE_CACHE_DEMO
+    tristate "ZX de_cache demo"
+    select LPKG_USING_LVGL
+    default n
+
+

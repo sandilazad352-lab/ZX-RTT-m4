@@ -1,0 +1,4 @@
+menuconfig ZX_BASE_DEMO
+    tristate "ZX BASE demo"
+    select LPKG_USING_LVGL
+    default n

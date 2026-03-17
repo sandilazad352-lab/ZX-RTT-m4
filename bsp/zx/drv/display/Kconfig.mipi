@@ -1,0 +1,23 @@
+#-----------------------------
+# mipi devices local parameter
+#-----------------------------
+
+menu "MIPI interface options"
+    depends on AIC_DISP_MIPI_DSI_DRV
+
+config AIC_MIPI_LANE_ASSIGNMENTS
+    hex "MIPI lane assigments"
+    default 0x3210
+    depends on AIC_DISP_MIPI_DSI_DRV
+
+config AIC_MIPI_CLK_POLAR
+    int "MIPI clk polarities"
+    default 0
+    depends on AIC_DISP_MIPI_DSI_DRV
+
+config AIC_MIPI_LANE_POLARITIES
+    int "MIPI lane polarities"
+    default 0
+    depends on AIC_DISP_MIPI_DSI_DRV
+
+endmenu

@@ -1,0 +1,24 @@
+menu "CST226SE touch panel options"
+
+config ZX_TOUCH_PANEL_NAME
+    string "touch name"
+    default "cst226se"
+    depends on ZX_TOUCH_CST226SE
+
+config QSMD_TOUCH_CST226SE_I2C_CHA
+    string "CST226SE using i2c channel index"
+    default "i2c3"
+    depends on ZX_TOUCH_CST226SE
+
+config QSMD_TOUCH_CST226SE_RST_PIN
+    string "CST226SE reset pin"
+    default "PA.8"
+    depends on ZX_TOUCH_CST226SE
+
+config QSMD_TOUCH_CST226SE_INT_PIN
+    string "CST226SE irq pin"
+    default "PA.9"
+    depends on ZX_TOUCH_CST226SE
+
+endmenu
+

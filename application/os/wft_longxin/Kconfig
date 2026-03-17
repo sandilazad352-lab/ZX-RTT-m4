@@ -1,0 +1,7 @@
+menuconfig WFT_LONGXIN
+    tristate "wft_longxin"
+    select LPKG_USING_LVGL
+    select LPKG_USING_FREETYPE
+    default n
+
+

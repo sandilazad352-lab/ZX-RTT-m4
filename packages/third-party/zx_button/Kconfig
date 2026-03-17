@@ -1,0 +1,37 @@
+
+# Kconfig file for package ramdisk
+menuconfig LPKG_USING_ZX_BUTTON
+    bool "zx button: adc/gpio button."
+    default n
+
+if LPKG_USING_ZX_BUTTON
+    menuconfig PKG_USING_ZX_ADC_BUTTON
+        bool "ADC mode: adc button."
+        default n
+        if PKG_USING_ZX_ADC_BUTTON
+            config ADC_BTN_CHANNEL
+                int "set adc channel"
+                range 0 7
+                default 7
+        endif
+
+    menuconfig PKG_USING_ZX_GPIO_BUTTON
+        bool "GPIO mode: gpio button."
+        default n
+        if PKG_USING_ZX_GPIO_BUTTON
+            config GPIO_BTN_PIN_NAME
+                string "set gpio pin"
+                default "PD.15"
+            config GPIO_BTN_NAME
+                string "set gpio btn name"
+                default "key1"
+            config GPIO_BTN_MODE
+                int "Select GPIO mode"
+                range 0 2
+                default 1
+            config GPIO_BTN_ACTIVE_LEVEL
+                int "set active level(The level at which the key is pressed)"
+                range 0 1
+                default 0
+        endif
+endif

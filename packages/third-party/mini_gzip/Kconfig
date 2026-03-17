@@ -1,0 +1,6 @@
+
+# Kconfig file for package mini_gzip
+menuconfig PKG_USING_MINIGZIP
+    bool "mini_gzip:a simple memory gzip"
+    default n
+

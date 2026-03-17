@@ -1,0 +1,36 @@
+Import('AIC_ROOT')
+Import('PRJ_KERNEL')
+from building import *
+
+cwd = GetCurrentDir()
+CPPPATH = [cwd, ]
+src = []
+
+if GetDepend('KERNEL_BAREMETAL') and GetDepend('AIC_OSR_CE_BARE_TEST'):
+    src += Glob('test_osrce.c')
+    # src += Glob('test.c')
+    if GetDepend('AIC_OSR_CE_SKE_BARE_TEST'):
+        src += Glob('ske_test/*.c')
+        src += Glob('ske_self_test/*.c')
+    if GetDepend('AIC_OSR_CE_PKE_BARE_TEST'):
+        src += Glob('pke_test/eccp*.c')
+        # src += Glob('pke_test/hal_test/*.c')
+        if GetDepend('AIC_PKE_RSA_SUPPORT'):
+            src += Glob('pke_test/rsa_test.c')
+        if GetDepend('AIC_PKE_SM2_SUPPORT'):
+            src += Glob('pke_test/sm2_test.c')
+        if GetDepend('AIC_PKE_ECDH_SUPPORT'):
+            src += Glob('pke_test/ecdh_test.c')
+        if GetDepend('AIC_PKE_ECDSA_SUPPORT'):
+            src += Glob('pke_test/ecdsa_test.c')
+    if GetDepend('AIC_OSR_CE_HASH_BARE_TEST'):
+        src += Glob('hash_hmac_test/*.c')
+        src += Glob('hash_hmac_self_test/*.c')
+    if GetDepend('AIC_OSR_CE_TRNG_BARE_TEST'):
+        src += Glob('trng_test.c')
+
+CFLAGS = ' -c -ffunction-sections'
+
+group = DefineGroup('test-lpce', src, depend = [''], CPPPATH = CPPPATH)
+
+Return('group')

@@ -1,0 +1,23 @@
+from building import *
+import os
+
+cwd = GetCurrentDir()
+group = []
+src = Glob('*.c')
+CPPPATH = [cwd]
+
+src += Glob('generated/*.c')
+src += Glob('generated/**/*.c')
+CPPPATH.append(cwd + '/generated')
+CPPPATH.append(cwd + '/generated/guider_fonts')
+CPPPATH.append(cwd + '/generated/guider_customer/fonts')
+
+list = os.listdir(cwd)
+for d in list:
+    path = os.path.join(cwd, d)
+    if os.path.isfile(os.path.join(path, 'SConscript')):
+        group = group + SConscript(os.path.join(d, 'SConscript'))
+
+group = group + DefineGroup('ZXM3A7D0', src, depend = ['ZXM3A7D0_DEMO'], CPPPATH = CPPPATH)
+
+Return('group')

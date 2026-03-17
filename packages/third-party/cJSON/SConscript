@@ -1,0 +1,14 @@
+from building import *
+
+cwd     = GetCurrentDir()
+CPPPATH = []
+src     = []
+
+if GetDepend('LPKG_USING_CJSON'):
+	src += Glob('*.c')
+
+CPPPATH = [cwd]
+
+group = DefineGroup('cJSON', src, depend = ['LPKG_USING_CJSON'], CPPPATH = CPPPATH)
+
+Return('group')

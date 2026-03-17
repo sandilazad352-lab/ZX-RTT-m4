@@ -1,0 +1,20 @@
+
+menu "st7701 spi"
+    config PANEL_ST7701_RESET_GPIO
+        string "ST7701 SPI reset"
+        default ""
+
+    config PANEL_ST7701_CS_GPIO
+        string "ST7701 SPI CS"
+        default ""
+
+    config PANEL_ST7701_SCK_GPIO
+        string "ST7701 SPI SCK"
+        default ""
+
+    config PANEL_ST7701_SDA_GPIO
+        string "ST7701 SPI SDA"
+        default ""
+
+endmenu
+

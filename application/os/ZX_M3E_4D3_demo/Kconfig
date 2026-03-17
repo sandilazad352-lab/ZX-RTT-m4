@@ -1,0 +1,6 @@
+menuconfig ZX_M3E_4D3_DEMO
+    tristate "ZX M3E 4D3 demo"
+    select LPKG_USING_LVGL
+    default n
+
+

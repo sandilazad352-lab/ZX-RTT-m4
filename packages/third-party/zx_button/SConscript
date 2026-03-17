@@ -1,0 +1,22 @@
+from building import *
+Import('rtconfig')
+
+src   = []
+cwd   = GetCurrentDir()
+
+if GetDepend('LPKG_USING_ZX_BUTTON'):
+    src += Glob('src/*.c')
+
+if GetDepend('PKG_USING_ZX_ADC_BUTTON'):
+    src += Glob('samples/zx_test_button_adc.c')
+
+if GetDepend('PKG_USING_ZX_GPIO_BUTTON'):
+    src += Glob('samples/zx_test_button_gpio.c')
+
+# add include path.
+path  = [cwd + '/inc']
+
+# add src and include to group.
+group = DefineGroup('zx_button', src, depend = ['LPKG_USING_ZX_BUTTON'], CPPPATH = path)
+
+Return('group')

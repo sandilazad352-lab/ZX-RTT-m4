@@ -1,0 +1,19 @@
+Import('RTT_ROOT')
+Import('rtconfig')
+from building import *
+
+cwd     = GetCurrentDir()
+src     = Glob('*.c')
+
+for i in os.listdir(cwd):
+    item_path = os.path.join(cwd, i)
+    if os.path.isdir(item_path):
+        src += Glob(os.path.join(i, '*.c'))
+
+CPPPATH = [cwd, os.path.join(cwd, 'ft5x06')]
+
+CFLAGS = ' -c -ffunction-sections'
+
+group = DefineGroup('zx_driver', src, depend = [''], CPPPATH = CPPPATH, CFLAGS=CFLAGS)
+
+Return('group')

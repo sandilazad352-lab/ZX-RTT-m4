@@ -1,0 +1,24 @@
+menu "Ilitek touch panel options"
+
+config ZX_TOUCH_PANEL_NAME
+    string "touch name"
+    default "ilitek"
+    depends on ZX_TOUCH_ILITEK
+
+config QSMD_TOUCH_ILITEK_I2C_CHA
+    string "Ilitek using i2c channel index"
+    default "i2c3"
+    depends on ZX_TOUCH_ILITEK
+
+config QSMD_TOUCH_ILITEK_RST_PIN
+    string "Ilitek reset pin"
+    default "PA.8"
+    depends on ZX_TOUCH_ILITEK
+
+config QSMD_TOUCH_ILITEK_INT_PIN
+    string "Ilitek irq pin"
+    default "PA.9"
+    depends on ZX_TOUCH_ILITEK
+
+endmenu
+

@@ -1,0 +1,13 @@
+Import('RTT_ROOT')
+Import('rtconfig')
+from building import *
+
+cwd     = GetCurrentDir()
+src     = Glob('*.c')
+
+CFLAGS = ' -c -ffunction-sections'
+CPPPATH = [cwd]
+
+group = DefineGroup('zx_driver', src, depend = ['KERNEL_FREERTOS'], CPPPATH = CPPPATH, CFLAGS=CFLAGS)
+
+Return('group')

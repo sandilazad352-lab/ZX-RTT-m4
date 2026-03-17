@@ -1,0 +1,8 @@
+
+# Kconfig file for package lzma
+menuconfig PKG_USING_LZMA
+    bool "LZMA: A compression library with high compression ratio"
+    default n
+    help
+       LZMA is a compression library with high compression ratio
+

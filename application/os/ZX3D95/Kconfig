@@ -1,0 +1,6 @@
+menuconfig ZX3D95_DEMO
+    tristate "ZX 3D95 demo"
+    select LPKG_USING_LVGL
+    default n
+
+

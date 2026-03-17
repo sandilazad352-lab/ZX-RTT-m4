@@ -1,0 +1,9 @@
+menuconfig ZX_LVGL_BENCHMARK_DEMO
+    tristate "ZX lvgl benchmark demo"
+    select LPKG_USING_LVGL
+    default n
+menuconfig ZX_LVGL_MJPEG_DECODE_DEMO
+    depends on ZX_LVGL_BENCHMARK_DEMO
+    tristate "ZX lvgl mjpeg demo"
+    default n
+

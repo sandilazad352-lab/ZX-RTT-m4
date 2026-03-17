@@ -1,0 +1,6 @@
+menuconfig ZX_CUSTDEMO
+    tristate "ZX CUST demo"
+    select LPKG_USING_LVGL
+    default n
+
+

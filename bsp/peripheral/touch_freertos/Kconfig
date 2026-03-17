@@ -1,0 +1,112 @@
+config TOUCH_PANEL_DRIVER
+    tristate "Enable Touch Panel Support"
+    default n
+    help
+      Enable support for touch panel drivers.
+
+config ZX_TOUCH_NONE
+    bool
+    default y
+
+if TOUCH_PANEL_DRIVER
+config TOUCH_PANEL_DRIVER
+    bool
+    default y
+
+choice
+    prompt "Select Touch Panel Driver"
+    default TOUCH_DRIVER_GT911
+config TOUCH_DRIVER_FT5X06
+    bool "FT5X06"
+    help
+      Select this option to use the FT5X06 touch panel driver.
+
+config TOUCH_DRIVER_GT2863
+    bool "GT2863"
+    help
+      Select this option to use the GT2863 touch panel driver.
+
+config TOUCH_DRIVER_CST816T
+    bool "CST816T"
+    help
+      Select this option to use the CST816T touch panel driver.
+
+config TOUCH_DRIVER_GT911
+    bool "GT911"
+    help
+      Select this option to use the GT911 touch panel driver.
+
+config TOUCH_DRIVER_CHSC6540
+    bool "CHSC6540"
+    help
+      Select this option to use the CHSC6540 touch panel driver.
+
+config TOUCH_DRIVER_SP2010
+    bool "SP2010"
+    help
+      Select this option to use the SP2010 touch panel driver.
+
+config TOUCH_DRIVER_CST328
+    bool "CST328"
+    help
+      Select this option to use the CST328 touch panel driver.
+
+endchoice
+
+config TOUCH_PANEL_WIDTH
+    int "Touch Panel Width"
+    default 1024
+    help
+      Specify the width of the touch panel in pixels.
+
+config TOUCH_PANEL_HEIGHT
+    int "Touch Panel Height"
+    default 600
+    help
+      Specify the height of the touch panel in pixels.
+
+choice
+    prompt "Touch Panel Direction"
+    default TOUCH_PANEL_DIRECTION_0
+    help
+      Specify the rotation of the touch panel. Options are 0 degrees, 90 degrees, 180 degrees, and 270 degrees.
+
+config TOUCH_PANEL_DIRECTION_0
+    bool "0 degrees"
+
+config TOUCH_PANEL_DIRECTION_90
+    bool "90 degrees"
+
+config TOUCH_PANEL_DIRECTION_180
+    bool "180 degrees"
+
+config TOUCH_PANEL_DIRECTION_270
+    bool "270 degrees"
+
+endchoice
+
+config TOUCH_PANEL_RST_PIN
+    string "Reset Pin"
+    default "PD.15"
+    help
+      Specify the Reset pin for the touch panel, e.g., "PA.2".
+
+config TOUCH_PANEL_INTR_PIN
+    string "Interrupt Pin"
+    default "PD.14"
+    help
+      Specify the Interrupt pin for the touch panel. Leave blank if not used.
+
+config TOUCH_PANEL_I2C_NUM
+    int "I2C Number"
+    default 0
+    help
+      Specify the I2C controller number the touch panel is connected to.
+
+config TOUCH_PANEL_I2C_FREQ
+    int "I2C Frequency"
+    default 400000
+    help
+      Specify the I2C frequency in Hz.
+
+endif # TOUCH_PANEL_DRIVER

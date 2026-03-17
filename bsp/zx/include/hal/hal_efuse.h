@@ -1,0 +1,27 @@
+/*
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ */
+
+#ifndef _ZX_HAL_EFUSE_H__
+#define _ZX_HAL_EFUSE_H__
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#include <aic_core.h>
+
+int hal_efuse_init(void);
+int hal_efuse_deinit(void);
+int hal_efuse_get_version(void);
+int hal_efuse_wait_ready(void);
+int hal_efuse_read(u32 wid, u32 *wval);
+int hal_efuse_write(u32 wid, u32 wval);
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif

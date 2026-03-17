@@ -1,0 +1,3 @@
+menuconfig BAREMETAL_HELLOWORLD
+    tristate "BAREMETAL_HELLOWORLD"
+    default n

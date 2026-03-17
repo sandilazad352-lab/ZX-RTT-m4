@@ -1,0 +1,6 @@
+menuconfig ZX_WIDGETS_DEMO
+    tristate "ZX lvgl widgets demo"
+    select LPKG_USING_LVGL
+    default n
+
+

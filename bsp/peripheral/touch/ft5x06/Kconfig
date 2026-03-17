@@ -1,0 +1,24 @@
+menu "FT5X06 touch panel options"
+
+config ZX_TOUCH_PANEL_NAME
+    string "ft5x06 name"
+    default "ft5x06"
+    depends on ZX_TOUCH_FT5X06
+
+config ZX_TOUCH_PANEL_FT5X06_I2C_CHA
+    string "ft5x06 using i2c channel index"
+    default "i2c3"
+    depends on ZX_TOUCH_FT5X06
+
+config ZX_TOUCH_PANEL_FT5X06_RST_PIN
+    string "ft5x06 reset pin"
+    default "PA.8"
+    depends on ZX_TOUCH_FT5X06
+
+config ZX_TOUCH_PANEL_FT5X06_INT_PIN
+    string "ft5x06 irq pin"
+    default "PA.9"
+    depends on ZX_TOUCH_FT5X06
+
+endmenu
+

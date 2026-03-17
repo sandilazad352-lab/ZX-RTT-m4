@@ -1,0 +1,45 @@
+# Kconfig file for package LVGL
+menuconfig LPKG_USING_LVGL
+    bool "LVGL (official): powerful and easy-to-use embedded GUI library"
+    default n
+
+if LPKG_USING_LVGL
+
+    config LPKG_LVGL_PATH
+        string
+        default "/packages/multimedia/LVGL/LVGL"
+
+    config LPKG_LVGL_THREAD_PRIO
+        int "Priority of LVGL thread"
+        default 20
+
+    config LPKG_LVGL_THREAD_STACK_SIZE
+        int "Stack size of LVGL thread"
+        default 4096
+
+    config LPKG_LVGL_DISP_REFR_PERIOD
+        int "Display refresh period (ms)"
+        default 5 # official suggestion
+
+    config LPKG_USING_LVGL_SQUARELINE
+        bool "Support SquareLine Studio"
+        default n
+
+    config LPKG_LVGL_USING_EXAMPLES
+        bool "Enable built-in examples"
+        default n
+
+    config LPKG_LVGL_USING_DEMOS
+        bool "Enable built-in demos"
+        default n
+
+    config LV_COLOR_DEPTH
+        int "lvgl color depth(32/16)"
+        default 32
+
+    config CACHE_IMG_NUM
+        int "image cached number"
+        default 15
+
+endif
+

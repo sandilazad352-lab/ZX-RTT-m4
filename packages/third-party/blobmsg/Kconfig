@@ -1,0 +1,5 @@
+
+# Kconfig file for package ramdisk
+menuconfig LPKG_USING_BLOBMSG
+    bool "blogmsg: openwrt blobmsg."
+    default n

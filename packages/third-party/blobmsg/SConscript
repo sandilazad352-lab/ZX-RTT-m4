@@ -1,0 +1,16 @@
+from building import *
+Import('rtconfig')
+
+src   = []
+cwd   = GetCurrentDir()
+
+if GetDepend('LPKG_USING_BLOBMSG'):
+    src += Glob('src/*.c')
+
+# add include path.
+path  = [cwd + '/inc']
+
+# add src and include to group.
+group = DefineGroup('blobmsg', src, depend = ['LPKG_USING_BLOBMSG'], CPPPATH = path)
+
+Return('group')

@@ -1,0 +1,7 @@
+menuconfig ZX_FREETYPE_DEMO
+    tristate "ZX freetype demo"
+    select LPKG_USING_LVGL
+    select LPKG_USING_FREETYPE
+    default n
+
+

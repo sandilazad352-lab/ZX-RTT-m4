@@ -1,0 +1,24 @@
+menu "CST3240 touch panel options"
+
+config ZX_TOUCH_PANEL_NAME
+    string "touch name"
+    default "cst3240"
+    depends on ZX_TOUCH_CST3240
+
+config QSMD_TOUCH_CST3240_I2C_CHA
+    string "CST3240 using i2c channel index"
+    default "i2c1"
+    depends on ZX_TOUCH_CST3240
+
+config QSMD_TOUCH_CST3240_RST_PIN
+    string "CST3240 reset pin"
+    default "PC.2"
+    depends on ZX_TOUCH_CST3240
+
+config QSMD_TOUCH_CST3240_INT_PIN
+    string "CST3240 irq pin"
+    default "PC.3"
+    depends on ZX_TOUCH_CST3240
+
+endmenu
+

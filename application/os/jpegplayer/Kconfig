@@ -1,0 +1,6 @@
+menuconfig JPEGPLAYER_DEMO
+    tristate "ZX jpeg demo"
+    select LPKG_USING_LVGL
+    default n
+
+

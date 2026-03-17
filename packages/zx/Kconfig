@@ -1,0 +1,8 @@
+menu "ZX packages options"
+
+source "packages/zx/mpp/Kconfig"
+source "packages/zx/env/Kconfig"
+source "packages/zx/pinmux-check/Kconfig"
+source "packages/zx/ota/Kconfig"
+
+endmenu

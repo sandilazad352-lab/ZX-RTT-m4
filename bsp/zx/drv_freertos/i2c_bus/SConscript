@@ -1,0 +1,14 @@
+Import('RTT_ROOT')
+Import('rtconfig')
+from building import *
+
+cwd     = GetCurrentDir()
+src     = Glob('*.c')
+# src = []
+CPPPATH = [cwd, ]
+
+CFLAGS = ' -c -ffunction-sections'
+
+group = DefineGroup('zx_driver', src, depend = [''], CPPPATH = CPPPATH, CFLAGS=CFLAGS)
+
+Return('group')

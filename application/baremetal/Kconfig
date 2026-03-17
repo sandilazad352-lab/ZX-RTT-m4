@@ -1,0 +1,10 @@
+menu "Baremetal APP options"
+
+config PRJ_APP
+    string "Application name"
+	default "baremetal"
+
+source "application/baremetal/bootloader/Kconfig"
+source "application/baremetal/helloworld/Kconfig"
+
+endmenu

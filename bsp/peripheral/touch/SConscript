@@ -1,0 +1,43 @@
+Import('AIC_ROOT')
+Import('PRJ_KERNEL')
+from building import *
+
+cwd = GetCurrentDir()
+src = Glob('*.c')
+CPPPATH = []
+
+if GetDepend('ZX_TOUCH_GT911'):
+    CPPPATH.append(cwd + '/gt911/inc')
+    src += Glob('gt911/src/*.c')
+
+if GetDepend('ZX_TOUCH_ILITEK'):
+    CPPPATH.append(cwd + '/ilitek/inc')
+    src += Glob('ilitek/src/*.c')
+
+if GetDepend('ZX_TOUCH_CST226SE'):
+    CPPPATH.append(cwd + '/cst226se/inc')
+    src += Glob('cst226se/src/*.c')
+
+if GetDepend('ZX_TOUCH_FT5X06'):
+    CPPPATH.append(cwd + '/ft5x06/inc')
+    src += Glob('ft5x06/src/*.c')
+
+if GetDepend('ZX_TOUCH_PANEL_FT7411'):
+    CPPPATH.append(cwd + '/ft7411/inc')
+    src += Glob('ft7411/src/*.c')
+
+if GetDepend('ZX_TOUCH_GSL1680'):
+    CPPPATH.append(cwd + '/gsl1680/inc')
+    src += Glob('gsl1680/src/*.c')
+
+if GetDepend('ZX_TOUCH_GSL2036'):
+    CPPPATH.append(cwd + '/gsl2036/inc')
+    src += Glob('gsl2036/src/*.c')
+
+if GetDepend('ZX_TOUCH_CST3240'):
+    CPPPATH.append(cwd + '/cst3240/inc')
+    src += Glob('cst3240/src/*.c')
+
+group = DefineGroup('touch', src, depend = [''], CPPPATH = CPPPATH)
+
+Return('group')

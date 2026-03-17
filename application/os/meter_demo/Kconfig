@@ -1,0 +1,4 @@
+menuconfig ZX_METER_DEMO
+    tristate "ZX METER demo"
+    select LPKG_USING_LVGL
+    default n

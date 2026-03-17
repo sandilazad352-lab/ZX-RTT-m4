@@ -1,0 +1,17 @@
+from building import *
+import os
+
+cwd = GetCurrentDir()
+group = []
+src = []
+CPPPATH = [cwd]
+
+# base ui
+if GetDepend(['ZX_BASE_DEMO']):
+    src += Glob('./ui_font_Big.c')
+    src += Glob('./ui_font_H1.c')
+    src += Glob('./ui_font_Title.c')
+
+group = group + DefineGroup('LVGL-port', src, depend = ['ZX_BASE_DEMO'], CPPPATH = CPPPATH)
+
+Return('group')

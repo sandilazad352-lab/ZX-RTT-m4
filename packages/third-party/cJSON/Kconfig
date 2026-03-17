@@ -1,0 +1,5 @@
+
+# Kconfig file for package cjson
+menuconfig LPKG_USING_CJSON
+    bool "cjson."
+    default n

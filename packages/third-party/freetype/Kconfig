@@ -1,0 +1,7 @@
+
+# Kconfig file for package littlefs
+menuconfig LPKG_USING_FREETYPE
+    bool "Freetype: 2.13.1"
+    default n
+
+

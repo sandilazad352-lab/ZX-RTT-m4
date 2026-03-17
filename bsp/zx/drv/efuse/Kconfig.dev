@@ -1,0 +1,18 @@
+#-----------------------------
+# eFuse/SID devices local parameter
+#-----------------------------
+menu "SID Parameter"
+    depends on AIC_USING_SID
+
+    config EFUSE_MAX_WORD
+	int "set efuse max word"
+	default 64
+
+    config EFUSE_TIMING_VALUE
+	hex "set timing value"
+	default 0x0402FFD8 if AIC_CHIP_M3C
+	default 0x0402FFD8 if AIC_CHIP_M3A
+	default 0x0402FFD8 if AIC_CHIP_M3
+	default 0x04021FF1 if AIC_CHIP_M4
+endmenu
+

@@ -1,0 +1,18 @@
+Import('rtconfig')
+from building import *
+
+cwd = GetCurrentDir()
+
+path = [cwd,
+    cwd + '/inc',
+    cwd + '/src']
+
+src = []
+src +=  Split('''
+        src/miniz.c
+        src/mini_gzip.c
+        ''')
+
+group = DefineGroup('minigzip', src, depend = ['PKG_USING_MINIGZIP'], CPPPATH = path)
+
+Return('group')

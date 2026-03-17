@@ -16,6 +16,7 @@ source "packages/third-party/beep/Kconfig"
 source "packages/third-party/memleak/Kconfig"
 source "packages/third-party/webclient/Kconfig"
 source "packages/third-party/ota_downloader/Kconfig"
+source "packages/third-party/umqtt/Kconfig"
 
 source "packages/third-party/freemodbus/Kconfig"
 

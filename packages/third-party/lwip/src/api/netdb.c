@@ -415,3 +415,31 @@ lwip_getaddrinfo(const char *nodename, const char *servname,
 }
 
 #endif /* LWIP_DNS && LWIP_SOCKET */
+
+/* Stub implementations for getaddrinfo/freeaddrinfo when DNS or SOCKET is disabled */
+#if !(LWIP_DNS && LWIP_SOCKET)
+
+/**
+ * Stub implementation of freeaddrinfo when DNS is disabled
+ */
+void lwip_freeaddrinfo(struct addrinfo *ai)
+{
+  /* No-op for disabled DNS */
+  (void)ai;
+}
+
+/**
+ * Stub implementation of getaddrinfo when DNS is disabled
+ */
+int lwip_getaddrinfo(const char *nodename, const char *servname,
+                     const struct addrinfo *hints, struct addrinfo **res)
+{
+  /* Return error when DNS is not available */
+  (void)nodename;
+  (void)servname;
+  (void)hints;
+  (void)res;
+  return 200;  /* EAI_NONAME - Name or service not known */
+}
+
+#endif /* !(LWIP_DNS && LWIP_SOCKET) */

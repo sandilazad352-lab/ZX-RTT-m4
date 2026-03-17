@@ -31,6 +31,7 @@
 #else
 #include <lwip/netdb.h>
 #include <lwip/sockets.h>
+#include <netdb.h>
 #endif /* RT_USING_SAL */
 
 #define DBG_ENABLE
@@ -45,6 +46,9 @@
 
 /* default receive or send timeout */
 #define WEBCLIENT_DEFAULT_TIMEO        6
+
+/* Forward declaration */
+struct addrinfo;
 
 extern long int strtol(const char *nptr, char **endptr, int base);
 

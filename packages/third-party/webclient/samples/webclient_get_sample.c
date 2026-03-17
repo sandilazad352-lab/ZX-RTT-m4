@@ -15,8 +15,8 @@
 #define GET_HEADER_BUFSZ               1024
 #define GET_RESP_BUFSZ                 1024
 
-#define GET_LOCAL_URI                  "http://www.rt-thread.com/service/rt-thread.txt"
-
+#define GET_LOCAL_URI                  "http://192.168.15.25:100/"
+//#define GET_LOCAL_URI                  "http://www.google.com"
 /* send HTTP GET request by common request interface, it used to receive longer data */
 static int webclient_get_comm(const char *uri)
 {

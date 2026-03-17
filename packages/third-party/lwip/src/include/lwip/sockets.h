@@ -574,6 +574,18 @@ int fcntl(int s, int cmd, ...);
 #endif /* LWIP_POSIX_SOCKETS_IO_NAMES */
 #endif /* LWIP_COMPAT_SOCKETS == 2 */
 
+/* Forward declaration and definition of struct addrinfo for getaddrinfo() support */
+struct addrinfo {
+    int               ai_flags;      /* Input flags. */
+    int               ai_family;     /* Address family of socket. */
+    int               ai_socktype;   /* Socket type. */
+    int               ai_protocol;   /* Protocol of socket. */
+    socklen_t         ai_addrlen;    /* Length of socket address. */
+    struct sockaddr  *ai_addr;       /* Socket address of socket. */
+    char             *ai_canonname;  /* Canonical name of service location. */
+    struct addrinfo  *ai_next;       /* Pointer to next in list. */
+};
+
 int lwip_accept(int s, struct sockaddr *addr, socklen_t *addrlen);
 int lwip_bind(int s, const struct sockaddr *name, socklen_t namelen);
 int lwip_shutdown(int s, int how);

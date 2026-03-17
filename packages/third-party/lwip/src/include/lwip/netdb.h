@@ -35,16 +35,20 @@
 #define LWIP_HDR_NETDB_H
 
 #include "lwip/opt.h"
-
-#if LWIP_DNS && LWIP_SOCKET
-
-#include "lwip/arch.h"
-#include "lwip/inet.h"
 #include "lwip/sockets.h"
+
+/* struct addrinfo is now defined in lwip/sockets.h */
+
+#if LWIP_SOCKET
+#include "lwip/arch.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+#if LWIP_DNS
+
+#include "lwip/inet.h"
 
 /* some rarely used options */
 #ifndef LWIP_DNS_API_DECLARE_H_ERRNO
@@ -99,17 +103,6 @@ struct hostent {
                            network byte order) for the host, terminated by a null pointer. */
 #define h_addr h_addr_list[0] /* for backward compatibility */
 };
-
-struct addrinfo {
-    int               ai_flags;      /* Input flags. */
-    int               ai_family;     /* Address family of socket. */
-    int               ai_socktype;   /* Socket type. */
-    int               ai_protocol;   /* Protocol of socket. */
-    socklen_t         ai_addrlen;    /* Length of socket address. */
-    struct sockaddr  *ai_addr;       /* Socket address of socket. */
-    char             *ai_canonname;  /* Canonical name of service location. */
-    struct addrinfo  *ai_next;       /* Pointer to next in list. */
-};
 #endif /* LWIP_DNS_API_DECLARE_STRUCTS */
 
 #define NETDB_ELEM_SIZE           (sizeof(struct addrinfo) + sizeof(struct sockaddr_storage) + DNS_MAX_NAME_LENGTH + 1)
@@ -141,10 +134,27 @@ int lwip_getaddrinfo(const char *nodename,
        lwip_getaddrinfo(nodname, servname, hints, res)
 #endif /* LWIP_COMPAT_SOCKETS */
 
+#endif /* LWIP_DNS */
+
+/* Stub function declarations for getaddrinfo/freeaddrinfo when LWIP_DNS is disabled */
+#if !LWIP_DNS
+void lwip_freeaddrinfo(struct addrinfo *ai);
+int lwip_getaddrinfo(const char *nodename,
+       const char *servname,
+       const struct addrinfo *hints,
+       struct addrinfo **res);
+
+#if LWIP_COMPAT_SOCKETS
+#define freeaddrinfo(addrinfo) lwip_freeaddrinfo(addrinfo)
+#define getaddrinfo(nodname, servname, hints, res) \
+       lwip_getaddrinfo(nodname, servname, hints, res)
+#endif /* LWIP_COMPAT_SOCKETS */
+#endif /* !LWIP_DNS */
+
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* LWIP_DNS && LWIP_SOCKET */
+#endif /* LWIP_SOCKET */
 
 #endif /* LWIP_HDR_NETDB_H */

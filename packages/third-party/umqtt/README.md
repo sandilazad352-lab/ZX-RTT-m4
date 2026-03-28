@@ -1,60 +1,60 @@
 # uMQTT
 
-## 1. Introduction
+## 1、介绍
 
-The uMQTT software package is an MQTT 3.1.1 protocol client implementation independently developed by RT-Thread. It provides basic functions for device communication with MQTT Broker.
+uMQTT 软件包是 RT-Thread 自主研发的，基于 MQTT 3.1.1 协议的客户端实现，它提供了设备与 MQTT Broker 通讯的基本功能
 
-uMQTT software package features:
+uMQTT 软件包功能如下:  
 
-* Implements basic connection, subscription, and publish functions
-* Features multiple heartbeat keep-alive and device reconnection mechanisms to ensure MQTT online status and adapt to complex scenarios
-* Supports QoS=0, QoS=1, and QoS=2 three message quality levels
-* Supports multiple client usage
-* User-friendly interface with multiple callback functions
-* Supports multiple configurable technical parameters, easy to use and suitable for product development
-* Powerful functionality, low resource consumption, and supports function customization
+* 实现基础的连接、订阅、发布功能;  
+* 具备多重心跳保活，设备重连机制，保证 mqtt 在线状态，适应复杂情况; 
+* 支持 QoS=0, QoS=1, QoS=2 三种发送信息质量;  
+* 支持多客户端使用;
+* 用户端接口简便，留有多种对外回调函数;
+* 支持多种技术参数可配置，易上手，便于产品化开发；
+* 功能强大，资源占用率低，支持功能可裁剪。
 
-Resource consumption (test environment W60X):
+资源占用(测试环境 W60X ):
 
-| ROM | RAM | Dynamic RAM |
+| ROM | RAM | 动态RAM | 
 | :-: | :-: | :-: |
-| 12.97KByte | 0.01KByte | 4.9KByte |
+| 12.97KByte | 0.01KByte | 4.9KByte | 
 
-### 1.1 Directory Structure
+
+### 1.1 目录结构
 
 ```
 umqtt
-├───docs                                // Documentation
-├───inc
-│   ├───umqtt_internal.h                // Internal packing and transmission header file
-│   ├───umqtt_cfg.h                     // Structure configuration header file
-│   └───umqtt.h                         // External interface header file
+├───docs                                // 说明文档
+├───inc  
+│   ├───umqtt_internal.h                // 内部打包及发送相关头文件
+│   ├───umqtt_cfg.h                     // 结构体配置头文件
+│   └───umqtt.h                         // 对外提供接口头文件
 ├───src
-│   ├───pkgs                            // Customized porting of paho_embedded library
-│   │   ├───umqtt_pkgs_decode.c         // Unpacking implementation source file
-│   │   ├───umqtt_pkgs_encode.c         // Packing implementation source file
-│   ├───trans
-│   │   └───umqtt_trans.c               // Transport layer source file
-│   └───umqtt_utils.c                   // Common interface implementation file
-├───samples                             // Finsh debug interface examples
-├───tests                               // Test cases
-├───LICENSE                             // Software package license
-├───README.md                           // Software package usage documentation
-└───SConscript                          // RT-Thread default build script
+│   ├───pkgs                            // 完成对 paho_mbedded 软件库的功能裁剪移植
+│   │   ├───umqtt_pkgs_decode.c         // 打包实现源文件
+│   │   ├───umqtt_pkgs_encode.c         // 解包实现源文件
+│   ├───trans                           
+│   │   └───umqtt_trans.c               // 传输层相关源文件
+│   └───umqtt_utils.c                   // 通用接口实现文件
+├───samples                             // finsh 调试接口示例
+├───tests                               // 测试用例
+├───LICENSE                             // 软件包许可证
+├───README.md                           // 软件包使用说明
+└───SConscript                          // RT-Thread 默认的构建脚本
 ```
 
-### 1.2 License
+### 1.2 许可证
+uMQTT 软件包遵循 Apache-2.0 许可，详见 LICENSE 文件。
 
-The uMQTT software package complies with the Apache-2.0 license. See the LICENSE file for details.
+### 1.3 依赖
 
-### 1.3 Dependencies
+- RT_Thread 3.0+
+- SAL 层组件
 
-- RT-Thread 3.0+
-- SAL component
+## 2、获取软件包
 
-## 2. Getting the Software Package
-
-**uMQTT software package configuration options**
+**uMQTT 软件包相关配置选项介绍**
 ```
 --- umqtt: A MQTT Client for RT-Thread
 [ ]   Enable MQTT example
@@ -75,205 +75,205 @@ The uMQTT software package complies with the Apache-2.0 license. See the LICENSE
 (4)   async message ack queue count
 (0xFFFF) connect information, keepalive interval, uint:Sec
 [ ]   Enable change connect keepalive time, uint:Sec
-    Version (latest)  --->
+      Version (latest)  --->
 ```
 
-* subtopic name list numbers: Maximum number of simultaneous subscriptions
-* send buffer size: Send data buffer size
-* receive buffer size: Receive data buffer size
-* uplink timer def cycle, uint:mSec: Timer running cycle, unit: mSec
-* reconnect max count: Maximum reconnection attempts
-* reconnect time interval, uint:Sec: Reconnection interval, unit: Sec
-* keepalive func, max count: Heartbeat reconnection count in keep-alive mechanism
-* heartbeat interval, uint:Sec: Heartbeat transmission interval, unit: Sec
-* connect timeout, uint:Sec: Connection timeout, unit: Sec
-* receive timeout, uint:mSec: Receive timeout, unit: mSec
-* send timeout, uint:Sec: Send timeout, unit: Sec
-* receive thread stack size: Internal receive thread stack
-* thread priority: Internal thread priority
-* async message ack queue size: Message queue size for receive thread to send processing results
-* connect information, keepalive interval, uint:Sec: KEEPALIVE value in MQTT CONNECT command, default maximum 0xFF, unit: Sec
-* Enable change connect keepalive time, uint:Sec: Allow modification of keepalive time in MQTT connection information, unit: Sec
-* Version: Software version number
+* subtopic name list numbers: 内部允许最大同时订阅数量
+* send buffer size: 发送数据缓存大小
+* receive buffer size: 接收数据缓存大小
+* uplink timer def cycle, uint:mSec: 定时器运行周期, 单位: mSec
+* reconnect max count: 最大重连次数
+* reconnect time interval, uint:Sec: 重连间隔时间, 单位: Sec
+* keepalive func, max count: 保活机制中心跳重连次数
+* heartbeat interval, uint:Sec: 心跳发送间隔, 单位: Sec
+* connect timeout, uint:Sec: 连接超时时间, 单位: Sec
+* receive timeout, uint:mSec: 接收超时时间, 单位: mSec
+* send timeout, uint:Sec: 发送超时时间, 单位: Sec
+* receive thread stack size: 内部接收线程堆栈
+* thread priority: 内部线程优先级
+* async message ack queue size: 接收线程处理完接收数据向外部传送处理结果消息队列大小
+* connect information, keepalive interval, uint:Sec：MQTT 协议中 CONNECT 命令下 KEEPALIVE 值，默认最大 0xFF, 单位: Sec
+* Enable change connect keepalive time, uint:Sec: 允许修改 MQTT 连接信息中的 keepalive 时间, 单位: Sec
+* Version: 软件版本号 
 
-## 3. Using uMQTT Software Package
+## 3、使用 uMQTT 软件包
 
-### 3.1 Software Package Working Principle
+### 3.1 软件包工作原理
 
-The uMQTT software package is mainly used to implement the MQTT protocol on embedded devices. The software package layered diagram is as follows:
+uMQTT 软件包主要用于在嵌入式设备上实现 MQTT 协议，软件包的主要工作基于 MQTT 协议实现。软件包分层图如下:
 
-  ![umqtt_layer_diagram](./docs/pictures/umqtt_分层图.jpg)
+  ![umqtt_分层图](./docs/pictures/umqtt_分层图.jpg)
 
-The main implementations during software development include:
+软件包实现过程中主要做了:
 
-1. Based on MQTT 3.1.1 protocol specifications, implement data protocol packing and unpacking
+1. 根据 MQTT 3.1.1 协议规定，进行软件包数据协议的封包解包；
 
-2. Adapt transport layer functions to the SAL layer
+2. 传输层函数适配对接 SAL 层；
 
-3. uMQTT client layer implements application-level interfaces based on protocol and transport layers. Supports basic connection, disconnection, subscription, unsubscription, and message publishing functions. Supports QoS0/1/2 three message quality levels. Utilizes uplink timer to implement multiple heartbeat keep-alive and device reconnection mechanisms, improving device online stability and adapting to complex scenarios.
+3. umqtt 客户端层，根据协议包层和传输层编写符合应用层的接口。实现基础连接、断连、订阅、取消订阅、发布消息等功能。支持 QoS0/1/2 三种发送信息质量。利用 uplink timer 定时器，实现多重心跳保活机制和设备重连机制，增加设备在线稳定性，适应复杂情况。
 
-### 3.2 User API Introduction
+### 3.2 用户 API 介绍
 
-#### 3.2.1 Create Object
+#### 3.2.1 创建对象
 ```c
 umqtt_client_t umqtt_create(const struct umqtt_info *info);
 ```
-Create a client structure object.
+创建客户端结构体对象。
 
-| Parameter | Description |
-|:----------|:-----------|
-| info | User information configuration |
-| **Return Value** | **Description** |
-| != RT_NULL | uMQTT client structure pointer |
-| == RT_NULL | Creation failed |
+| 参数              | 描述                                |  
+|:------------------|:-----------------------------------|  
+| info | 用户信息配置 |  
+| **返回值** | **描述** |  
+| != RT_NULL | umqtt 客户端结构体指针 |  
+| == RT_NULL | 创建失败 |  
 
-#### 3.2.2 Delete Object
+#### 3.2.2 删除对象
 ```c
 int umqtt_delete(struct umqtt_client *client);
 ```
-Delete the client structure object and release memory.
+删除客户端结构体对象，并释放内存。
 
-| Parameter | Description |
-|:----------|:-----------|
-| client | uMQTT client structure pointer |
-| **Return Value** | **Description** |
-| UMQTT_OK | Success |
+| 参数 | 描述 |  
+|:----|:----|  
+| client | umqtt 客户端结构体指针 |  
+| **返回值** | **描述** |  
+| UMQTT_OK | 成功 |  
 
-#### 3.2.3 Start Client
+#### 3.2.3 启动客户端
 ```c
 int umqtt_start(struct umqtt_client *client);
 ```
-Start the client session, establish network connection and MQTT protocol connection.
+启动客户端会话，进行网络连接，和 MQTT 协议连接。
 
-| Parameter | Description |
-|:----------|:-----------|
-| client | uMQTT client structure pointer |
-| **Return Value** | **Description** |
-| >=0 | Success |
-| <0 | Failure |
+| 参数 | 描述 |  
+|:----|:----|  
+| client | umqtt 客户端结构体指针 |  
+| **返回值** | **描述** |  
+| >=0 | 成功 |  
+| <0 | 失败 |  
 
-#### 3.2.4 Stop Client
+#### 3.2.4 停止客户端
 ```c
 void umqtt_stop(struct umqtt_client *client);
 ```
-Stop the client session, close the receive thread, pause the uplink timer, send MQTT disconnect command, and close the socket.
+停止客户端会话，关闭接收线程，暂停 uplink 定时器，发送 MQTT 断开连接命令，关闭 socket 套接字。
 
-| Parameter | Description |
-|:----------|:-----------|
-| client | uMQTT client structure pointer |
-| **Return Value** | **Description** |
-| None | None |
+| 参数 | 描述 |  
+|:----|:----|  
+| client | umqtt 客户端结构体指针 |  
+| **返回值** | **描述** |  
+| 无 | 无 |  
 
-#### 3.2.5 Publish Message
+#### 3.2.5 发布消息
 ```c
 int umqtt_publish(struct umqtt_client *client, enum umqtt_qos qos, const char *topic, void *payload, size_t length, int timeout);
 ```
-Publish messages with corresponding quality level to subscribed topics.
+针对订阅主题发布相关质量的消息。
 
-| Parameter | Description |
-|:----------|:-----------|
-| client | uMQTT client structure pointer |
-| qos | Message transmission quality level |
-| topic | Publish topic |
-| payload | Publish message |
-| length | Publish message length |
-| timeout | Publish message timeout, unit: mSec |
-| **Return Value** | **Description** |
-| >=0 | Success |
-| <0 | Failure |
+| 参数 | 描述 |  
+|:----|:----|  
+| client | umqtt 客户端结构体指针 |  
+| qos | 消息发送质量 |  
+| topic | 发布主题 |  
+| payload | 发布消息 |  
+| length | 发布消息的长度 |  
+| timeout | 发布消息超时时间, 单位:mSec |  
+| **返回值** | **描述** |  
+| >=0 | 成功 |  
+| <0 | 失败 |  
 
-#### 3.2.6 Subscribe Topic
+#### 3.2.6 订阅主题
 ```c
 int umqtt_subscribe(struct umqtt_client *client, const char *topic, enum umqtt_qos qos, umqtt_subscribe_cb callback);
 ```
-Subscribe to a topic and set the callback function for receiving publish messages on that topic.
+订阅主题，并设置对应主题接收 publish 消息时的回调函数。
 
-| Parameter | Description |
-|:----------|:-----------|
-| client | uMQTT client structure pointer |
-| topic | Subscribe topic |
-| qos | Subscription quality level |
-| callback | Callback function for receiving publish messages on the topic |
-| **Return Value** | **Description** |
-| >=0 | Success |
-| <0 | Failure |
+| 参数 | 描述 |  
+|:----|:----|  
+| client | umqtt 客户端结构体指针 |  
+| topic | 订阅主题 |  
+| qos | 订阅质量 |  
+| callback | 对应主题接收 publish 消息时的回调函数 |  
+| **返回值** | **描述** |  
+| >=0 | 成功 |  
+| <0 | 失败 |  
 
-#### 3.2.7 Unsubscribe Topic
+#### 3.2.7 取消订阅主题
 ```c
 int umqtt_unsubscribe(struct umqtt_client *client, const char *topic);
 ```
-Unsubscribe from a topic and release related resources.
+取消相关主题的订阅，并释放相关的资源。
 
-| Parameter | Description |
-|:----------|:-----------|
-| client | uMQTT client structure pointer |
-| topic | Unsubscribe topic |
-| **Return Value** | **Description** |
-| >=0 | Success |
-| <0 | Failure |
+| 参数 | 描述 |  
+|:----|:----|  
+| client | umqtt 客户端结构体指针 |  
+| topic | 取消订阅主题 |  
+| **返回值** | **描述** |  
+| >=0 | 成功 |  
+| <0 | 失败 |  
 
-#### 3.2.8 Asynchronous Message Publishing
+#### 3.2.8 异步发送消息
 ```c
 int umqtt_publish_async(struct umqtt_client *client, enum umqtt_qos qos, const char *topic, void *payload, size_t length);
 ```
-Asynchronously publish messages without waiting for acknowledgment.
+异步发送消息，只负责将信息发送出去，不负责阻塞接收。
 
-| Parameter | Description |
-|:----------|:-----------|
-| client | uMQTT client structure pointer |
-| qos | Message transmission quality level |
-| topic | Topic for the message |
-| payload | Message to publish |
-| length | Message length |
-| **Return Value** | **Description** |
-| >=0 | Success |
-| <0 | Failure |
+| 参数 | 描述 |  
+|:----|:----|  
+| client | umqtt 客户端结构体指针 |  
+| qos | 发送消息质量 |  
+| topic | 发送消息对应主题 |  
+| payload | 发布的消息 |  
+| length | 发布的消息长度 |  
+| **返回值** | **描述** |  
+| >=0 | 成功 |  
+| <0 | 失败 |  
 
-#### 3.2.9 Set/Get Parameters
+#### 3.2.9 设定获取参数
 ```c
 int umqtt_control(struct umqtt_client *client, enum umqtt_cmd cmd, void *params);
 ```
-Set or read internal parameters based on the command.
+根据相关命令设定或者读取内部相关参数。
 
-| Parameter | Description |
-|:----------|:-----------|
-| client | uMQTT client structure pointer |
-| cmd | Set or read internal parameters |
-| params | When setting data, returns structure; when reading data, pass RT_NULL |
-| **Return Value** | **Description** |
-| >=0 | Success when setting; specific return data when reading |
-| >0 | Failure when setting; specific return data when reading |
+| 参数 | 描述 |  
+|:----|:----|  
+| client | umqtt 客户端结构体指针 |  
+| cmd | 设定或者读取内部相关参数 |  
+| params | 设定数据时，为返回值结构体；读取数据时，为 RT_NULL |  
+| **返回值** | **描述** |  
+| >=0 | 设定数据时, 成功; 读取数据时, 为具体返回数据 |  
+| >0 | 设定数据时, 失败; 读取数据时, 为具体返回数据 |  
 
-### 3.3 Example Introduction
+### 3.3 示例介绍
 
-#### 3.3.1 Preparation
+#### 3.3.1 准备工作
 
-- Configure the software package and example code with menuconfig
+- menuconfig 配置获取软件包和示例代码
 
-    Use the ENV tool provided by RT-Thread and run **menuconfig** to configure the software package.
-    Enable the UMQTT software package and the test example (`Enable MQTT example`) as shown below:
+    打开 RT-Thread 提供的 ENV 工具，使用 **menuconfig** 配置软件包, 
+    启用 UMQTT 软件包，并配置使能测试例程 (`Enable MQTT example`), 如下所示: 
 
 ``` shell
 RT-Thread online packages
     IoT - internet of things  --->
-      [*] umqtt: A MQTT Client for RT-Thread.  --->
-        [*] Enable MQTT example                     # Enable UMQTT example
+        [*] umqtt: A MQTT Client for RT-Thread.  --->
+            [*] Enable MQTT example                     # 开启 UMQTT 例程
 ```
 
-- Use `pkgs --update` command to download the software package
-- Compile and download
-- Use [emqx](https://www.emqx.io/) to set up an MQTT Broker
+- 使用 `pkgs --update` 命令下载软件包;  
+- 编译下载;  
+- 使用 [emqx](https://www.emqx.io/cn/) 搭建 MQTT Broker 。 
 
-#### 3.3.2 Running Examples
+#### 3.3.2 启动例程
 
-* Start the uMQTT client
+* 启动 umqtt 客户端
 
-Start uMQTT client process:
-- Declare a `struct umqtt_info` structure variable as the uMQTT client user configuration variable
-- Assign the test MQTT Broker URI
-- Create uMQTT client
-- Declare and set connection, online, offline, and heartbeat callback functions
-- Call `umqtt_start()` function to start the uMQTT client
+启动 umqtt 客户端流程:
+- 申明 `struct umqtt_info` 结构体变量作为 umqtt 客户端用户配置变量  
+- 测试 MQTT Broker 的 URI 进行赋值  
+- 创建 umqtt 客户端  
+- 声明并设置连接、在线、离线、心跳回调函数
+- 调用 `umqtt_start()` 函数，启动 umqtt 客户端
 
 ```shell
 msh />umqtt_ex_start
@@ -282,7 +282,7 @@ msh />umqtt_ex_start
 [I/umqtt.sample]  umqtt start success!
 ```
 
-* Subscribe function
+* 订阅功能
 
 ```shell
 msh />umqtt_ex_subscribe "test0"
@@ -291,25 +291,26 @@ msh />umqtt_ex_subscribe "test0"
 [D/umqtt] subscribe ack ok!
 ```
 
-* Publish message
+* 发布消息
 
 ```shell
-msh />umqtt_ex_publish test 0 hello                     # Message quality qos0
+msh />umqtt_ex_publish test 0 hello                     # 消息发送质量 qos0
 [D/umqtt.sample]  umqtt example publish!
 [D/umqtt.sample]  umqtt topic recv callback! name length: 4, name: testhello, packet id: 0, payload len: 6
 
-msh />umqtt_ex_publish test 1 hello_this                # Message quality qos1
+msh />umqtt_ex_publish test 1 hello_this                # 消息发送质量 qos1 
 [D/umqtt.sample]  umqtt example publish!
 [D/umqtt.sample]  umqtt topic recv callback! name length: 4, name: test, packet id: 1, payload len: 11
 [I/umqtt]  publish qos1 ack success!
 
-msh />umqtt_ex_publish test 1 hello_this_world          # Message quality qos2
+msh />umqtt_ex_publish test 1 hello_this_world          # 消息发送质量 qos2 
 [D/umqtt.sample]  umqtt example publish!
 [D/umqtt.sample]  umqtt topic recv callback! name length: 4, name: test, packet id: 2, payload len: 17
 [I/umqtt]  publish qos2 ack success!
+
 ```
 
-* Unsubscribe
+* 取消订阅
 
 ```shell
 msh />umqtt_ex_unsubscribe test
@@ -317,20 +318,21 @@ msh />umqtt_ex_unsubscribe test
 [I/umqtt]  unsubscribe ack ok!
 ```
 
-* Stop the uMQTT client
+* 停止 umqtt 客户端
 
 ```shell
 msh />umqtt_ex_stop
 [D/umqtt.sample]  umqtt example stop!
 ```
 
-## 4. Notes
+## 4、注意事项
 
-* This version does not support encrypted communication protocols
-* Use [emqx](https://www.emqx.io/) to set up an MQTT Broker
+* 本版本暂不支持加密通信协议; 
+* 使用 [emqx](https://www.emqx.io/cn/) 搭建 MQTT Broker 。
 
-## 5. Contact & Acknowledgments
 
-Contact: springcity
+## 5、联系方式 & 感谢
+联系人: springcity  
 Email: caochunchen@rt-thread.com
+
 

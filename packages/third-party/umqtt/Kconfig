@@ -1,0 +1,16 @@
+# Kconfig file for local package umqtt
+menuconfig PKG_USING_UMQTT
+    bool "uMQTT: Lightweight MQTT client"
+    default n
+
+if PKG_USING_UMQTT
+
+    config PKG_UMQTT_PATH
+        string
+        default "/packages/third-party/umqtt"
+
+    config PKG_USING_UMQTT_EXAMPLE
+        bool "Enable uMQTT example"
+        default n
+
+endif

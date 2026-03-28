@@ -1,53 +1,52 @@
 ﻿#include "zx_ui_entry.h"
+#include "../services/zx_mqtt_publish.h"
+#include "../services/zx_mqtt_subscribe.h"
+
 #include <rtthread.h>
 #include <string.h>
 
-#ifdef PKG_USING_UMQTT
-#include "umqtt.h"
-#endif
-
-#define CUSTDEMO_MQTT_URI       "tcp://172.16.16.4:1883"
-#define CUSTDEMO_MQTT_TOPIC     "/mqtt/test"
-#define CUSTDEMO_MQTT_CLIENT_ID "custdemo_ui"
-
 static lv_obj_t *s_textarea;
 static lv_obj_t *s_keyboard;
+static lv_obj_t *s_sub_msg_label;
 
-#ifdef PKG_USING_UMQTT
-static umqtt_client_t s_mqtt_client;
-static rt_bool_t s_mqtt_started = RT_FALSE;
+static char s_sub_msg[128] = "Sub message: waiting...";
+static rt_bool_t s_sub_msg_dirty = RT_TRUE;
+static rt_mutex_t s_sub_msg_lock = RT_NULL;
 
-static int mqtt_start_if_needed(void)
+static void sub_msg_timer_cb(lv_timer_t *timer)
 {
-    if (s_mqtt_started && s_mqtt_client != RT_NULL)
+    LV_UNUSED(timer);
+
+    if (!s_sub_msg_dirty || s_sub_msg_label == NULL || s_sub_msg_lock == RT_NULL)
     {
-        return 0;
+        return;
     }
 
-    struct umqtt_info info = {0};
-    info.uri = CUSTDEMO_MQTT_URI;
-    info.client_id = CUSTDEMO_MQTT_CLIENT_ID;
-
-    s_mqtt_client = umqtt_create(&info);
-    if (s_mqtt_client == RT_NULL)
-    {
-        rt_kprintf("[custdemo] mqtt create failed\n");
-        return -1;
-    }
-
-    if (umqtt_start(s_mqtt_client) < 0)
-    {
-        rt_kprintf("[custdemo] mqtt start failed\n");
-        umqtt_delete(s_mqtt_client);
-        s_mqtt_client = RT_NULL;
-        return -1;
-    }
-
-    s_mqtt_started = RT_TRUE;
-    rt_kprintf("[custdemo] mqtt connected: %s\n", CUSTDEMO_MQTT_URI);
-    return 0;
+    rt_mutex_take(s_sub_msg_lock, RT_WAITING_FOREVER);
+    lv_label_set_text(s_sub_msg_label, s_sub_msg);
+    s_sub_msg_dirty = RT_FALSE;
+    rt_mutex_release(s_sub_msg_lock);
 }
-#endif
+
+static void mqtt_sub_msg_cb(const char *topic,
+                            size_t topic_len,
+                            const char *payload,
+                            size_t payload_len)
+{
+    if (payload == RT_NULL || payload_len == 0 || s_sub_msg_lock == RT_NULL)
+    {
+        return;
+    }
+
+    rt_mutex_take(s_sub_msg_lock, RT_WAITING_FOREVER);
+
+    rt_snprintf(s_sub_msg, sizeof(s_sub_msg), "Sub %.*s: %.*s",
+                (int)topic_len, topic,
+                (int)((payload_len > 80) ? 80 : payload_len), payload);
+    s_sub_msg_dirty = RT_TRUE;
+
+    rt_mutex_release(s_sub_msg_lock);
+}
 
 static void keyboard_event_cb(lv_event_t *e)
 {
@@ -79,36 +78,10 @@ static void send_btn_event_cb(lv_event_t *e)
     {
         const char *text = lv_textarea_get_text(s_textarea);
 
-        if (text == RT_NULL || text[0] == '\0')
+        if (zx_mqtt_publish_text(text) < 0)
         {
-            rt_kprintf("[custdemo] empty text, skip publish\n");
             return;
         }
-
-#ifdef PKG_USING_UMQTT
-        if (mqtt_start_if_needed() < 0)
-        {
-            rt_kprintf("[custdemo] mqtt not ready\n");
-            return;
-        }
-
-        int ret = umqtt_publish(s_mqtt_client,
-                                UMQTT_QOS1,
-                                CUSTDEMO_MQTT_TOPIC,
-                                (void *)text,
-                                strlen(text),
-                                1000);
-        if (ret < 0)
-        {
-            rt_kprintf("[custdemo] mqtt publish failed: %d\n", ret);
-            return;
-        }
-
-        rt_kprintf("[custdemo] mqtt publish ok topic=%s payload=%s\n", CUSTDEMO_MQTT_TOPIC, text);
-#else
-        rt_kprintf("[custdemo] PKG_USING_UMQTT not enabled\n");
-        return;
-#endif
 
         lv_textarea_set_text(s_textarea, "");
         lv_keyboard_set_textarea(s_keyboard, NULL);
@@ -119,6 +92,11 @@ static void send_btn_event_cb(lv_event_t *e)
 void zx_ui_entry(void)
 {
     lv_obj_t *scr = lv_scr_act();
+
+    if (s_sub_msg_lock == RT_NULL)
+    {
+        s_sub_msg_lock = rt_mutex_create("submsg", RT_IPC_FLAG_FIFO);
+    }
 
     s_textarea = lv_textarea_create(scr);
     lv_obj_set_width(s_textarea, 280);
@@ -136,9 +114,24 @@ void zx_ui_entry(void)
     lv_label_set_text(btn_label, "Send");
     lv_obj_center(btn_label);
 
+    s_sub_msg_label = lv_label_create(scr);
+    lv_obj_set_width(s_sub_msg_label, 300);
+    lv_obj_align_to(s_sub_msg_label, send_btn, LV_ALIGN_OUT_BOTTOM_MID, 0, 14);
+    lv_label_set_long_mode(s_sub_msg_label, LV_LABEL_LONG_WRAP);
+    lv_label_set_text(s_sub_msg_label, s_sub_msg);
+
     s_keyboard = lv_keyboard_create(scr);
     lv_obj_set_size(s_keyboard, lv_pct(100), 120);
     lv_obj_align(s_keyboard, LV_ALIGN_BOTTOM_MID, 0, 0);
     lv_obj_add_flag(s_keyboard, LV_OBJ_FLAG_HIDDEN);
     lv_obj_add_event_cb(s_keyboard, keyboard_event_cb, LV_EVENT_ALL, NULL);
+
+    lv_timer_create(sub_msg_timer_cb, 100, NULL);
+
+    zx_mqtt_set_subscribe_callback(mqtt_sub_msg_cb);
+    if (zx_mqtt_subscribe_default_topic() < 0)
+    {
+        rt_snprintf(s_sub_msg, sizeof(s_sub_msg), "Sub message: subscribe failed");
+        s_sub_msg_dirty = RT_TRUE;
+    }
 }

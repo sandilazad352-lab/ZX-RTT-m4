@@ -96,7 +96,14 @@ static void rest_btn_event_cb(lv_event_t *e)
 
     if (code == LV_EVENT_CLICKED)
     {
-        zx_rest_api_fetch_json_async();
+        rest_item_t item = {0};
+        
+        int result = zx_rest_backend_read(1, &item);
+        if (result == 0) {
+            rt_kprintf("[custdemo] REST API: Item retrieved with ID=%d, name='%s'\n", item.id, item.name);
+        } else {
+            rt_kprintf("[custdemo] REST API: Read failed (error=%d)\n", result);
+        }
     }
 }
 

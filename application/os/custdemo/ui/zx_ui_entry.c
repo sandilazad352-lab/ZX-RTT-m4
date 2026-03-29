@@ -1,6 +1,7 @@
 ﻿#include "zx_ui_entry.h"
 #include "../services/zx_mqtt_publish.h"
 #include "../services/zx_mqtt_subscribe.h"
+#include "../services/zx_rest_api.h"
 
 #include <rtthread.h>
 #include <string.h>
@@ -89,6 +90,16 @@ static void send_btn_event_cb(lv_event_t *e)
     }
 }
 
+static void rest_btn_event_cb(lv_event_t *e)
+{
+    lv_event_code_t code = lv_event_get_code(e);
+
+    if (code == LV_EVENT_CLICKED)
+    {
+        zx_rest_api_fetch_json_async();
+    }
+}
+
 void zx_ui_entry(void)
 {
     lv_obj_t *scr = lv_scr_act();
@@ -107,16 +118,25 @@ void zx_ui_entry(void)
 
     lv_obj_t *send_btn = lv_btn_create(scr);
     lv_obj_set_size(send_btn, 120, 42);
-    lv_obj_align_to(send_btn, s_textarea, LV_ALIGN_OUT_BOTTOM_MID, 0, 16);
+    lv_obj_align_to(send_btn, s_textarea, LV_ALIGN_OUT_BOTTOM_LEFT, 0, 16);
     lv_obj_add_event_cb(send_btn, send_btn_event_cb, LV_EVENT_CLICKED, NULL);
 
     lv_obj_t *btn_label = lv_label_create(send_btn);
     lv_label_set_text(btn_label, "Send");
     lv_obj_center(btn_label);
 
+    lv_obj_t *rest_btn = lv_btn_create(scr);
+    lv_obj_set_size(rest_btn, 120, 42);
+    lv_obj_align_to(rest_btn, s_textarea, LV_ALIGN_OUT_BOTTOM_RIGHT, 0, 16);
+    lv_obj_add_event_cb(rest_btn, rest_btn_event_cb, LV_EVENT_CLICKED, NULL);
+
+    lv_obj_t *rest_label = lv_label_create(rest_btn);
+    lv_label_set_text(rest_label, "REST API");
+    lv_obj_center(rest_label);
+
     s_sub_msg_label = lv_label_create(scr);
     lv_obj_set_width(s_sub_msg_label, 300);
-    lv_obj_align_to(s_sub_msg_label, send_btn, LV_ALIGN_OUT_BOTTOM_MID, 0, 14);
+    lv_obj_align_to(s_sub_msg_label, send_btn, LV_ALIGN_OUT_BOTTOM_LEFT, 0, 14);
     lv_label_set_long_mode(s_sub_msg_label, LV_LABEL_LONG_WRAP);
     lv_label_set_text(s_sub_msg_label, s_sub_msg);
 
